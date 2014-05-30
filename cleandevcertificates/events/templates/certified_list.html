@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<div class="clearfix">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Palestra</th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for certified in certifieds %}
+            <tr>
+                <td>{{ certified.name }}</td>
+                <td align="right">
+                    <a href="{% url 'event:certified' certified.pk %}" class="btn btn-default btn-sm">
+                        <i class="glyphicon glyphicon-send"></i>
+                    </a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+            <td colspan="2">Você ainda não possui certificados. Está precisando participar mais dos eventos, não acha? =P</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}

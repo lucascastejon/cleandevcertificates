@@ -1,0 +1,15 @@
+<div class="clearfix">
+    <form id="id_form_certified" action="{% url event:certified %}" method="POST">
+        <div class="form-group col-sm-12">
+            <label for="id_token" class="label-control">Digite o código do certificado</label>
+            <div class="input-group">
+                <input id="id_token" name="token" class="form-control">
+                <span class="input-group-btn">
+                    <button class="btn btn-default"><i class="glyphicon glyphicon-send"></i></button>
+                </span>
+            </div>
+            <div id="errors"></div>
+        </div>
+        <div id="result"></div>
+    </form>
+</div>
