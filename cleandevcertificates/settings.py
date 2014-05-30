@@ -65,14 +65,10 @@ WSGI_APPLICATION = 'cleandevcertificates.wsgi.application'
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': config(
-            'DATABASE_URL',
-            default='sqlite:///{db}'.format(
-                db=os.path.join(BASE_DIR, 'db.sqlite3')),
-            cast=db_url)
-    }
+    'default': config(
+        'DATABASE_URL',
+        default='sqlite:///%s' % os.path.join(BASE_DIR, 'db.sqlite3'),
+        cast=db_url)
 }
 
 # Internationalization
