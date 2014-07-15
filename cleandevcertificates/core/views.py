@@ -64,7 +64,7 @@ class PersonCreateView(CreateView):
     model = Person
 
     def dispatch(self, request, *args, **kwargs):
-        if not logged(request):
+        if logged(request):
             return HttpResponseRedirect(r('core:home'))
 
         return super(PersonCreateView, self).dispatch(request, *args, **kwargs)
