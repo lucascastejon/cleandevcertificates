@@ -9,15 +9,10 @@ class PersonForm(forms.ModelForm):
     class Meta:
         model = Person
 
-        fields = (
-            'name', 'cpf', 'email', 'university', 'course',
-            'semester', 'city', 'facebook', 'twitter'
-        )
-
     def __init__(self, *args, **kwargs):
         super(PersonForm, self).__init__(*args, **kwargs)
 
-        #self.fields['kind'].widget = forms.HiddenInput()
+        self.fields['kind'].widget = forms.HiddenInput()
         self.fields['cpf'].validators.append(self.cpf_validator)
 
     def cpf_validator(value):

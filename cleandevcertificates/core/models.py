@@ -11,7 +11,8 @@ class Person(models.Model):
         ('P', _(u'Local')),
     )
 
-    kind = models.CharField(_(u'tipo'), max_length=1, choices=KIND_CHOICES)
+    kind = models.CharField(_(u'tipo'), max_length=1,
+                            choices=KIND_CHOICES, default="S")
     university = models.ForeignKey('self', verbose_name=_(
         u'faculdade'), blank=True, null=True,
         limit_choices_to={'kind__in': ['U', 'P']})

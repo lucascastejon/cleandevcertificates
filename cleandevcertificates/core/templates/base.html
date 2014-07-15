@@ -21,7 +21,7 @@
             <ul class="nav navbar-nav navbar-right">
                 {% if request.session.person %}
                 <li>
-                    <a href="{% url 'core:person_edit' %}">Olá, {{ request.session.person.name }}</a>
+                    <a href="{% url 'core:person_edit' request.session.person.pk %}">Olá, {{ request.session.person.name }}</a>
                 </li>
                 <li>
                     <a href="{% url 'core:logout' %}"><i class="glyphicon glyphicon-off"></i></a>
