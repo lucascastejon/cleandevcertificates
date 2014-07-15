@@ -1,20 +1,29 @@
 {% extends 'base.html' %}
 
+{% load staticfiles %}
+{% load bootstrap3 %}
+
 {% block bodyclass %}home{% endblock bodyclass %}
+
+
+{% block js %}
+<script type="text/javascript" src="{% static 'js/jquery.maskedinput.js' %}"></script>
+<script type="text/javascript" async src="{% static 'js/person.js' %}"></script>
+{% endblock js %}
 
 
 {% block content %}
 <div class="clearfix">
     <form action="{% url 'core:login' %}" method="POST">
-        <div class="form-group">
-            <label for="id_cpf" class="control-label">CPF</label>
-            <input id="id_cpf" name="cpf" type="text" class="form-control">
-        </div>
+        {% csrf_token %}
 
-        <div class="form-group">
-            <label for="id_email" class="control-label">CPF</label>
-            <input id="id_email" name="email" type="email" class="form-control">
+        {% if form.errors.non_field_errors %}
+        <div class="alert alert-danger">
+            {{ form.errors.non_field_errors }}
         </div>
+        {% endif %}
+
+        {% bootstrap_form form %}
 
         <button class="btn btn-primary btn-block">Entrar</button>
     </form>

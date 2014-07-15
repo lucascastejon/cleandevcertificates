@@ -16,13 +16,21 @@
     <header class="navbar navbar-inverse">
         <div class="container">
             <div class="navbar-header">
-                <a href="#home" class="navbar-brand">CleanDev.org</a>
+                <a href="{% url 'core:home' %}" class="navbar-brand">CleanDev.org</a>
             </div>
-
             <ul class="nav navbar-nav navbar-right">
+                {% if request.session.person %}
                 <li>
-                    <a href="{% url 'core:person_edit' %}">Usuário</a>
+                    <a href="{% url 'core:person_edit' %}">Olá, {{ request.session.person.name }}</a>
                 </li>
+                <li>
+                    <a href="{% url 'core:logout' %}"><i class="glyphicon glyphicon-off"></i></a>
+                </li>
+                {% else %}
+                <li>
+                    <a href="{% url 'core:person_new' %}">Cadastrar</a>
+                </li>
+                {% endif %}
             </ul>
         </div>
     </header>
@@ -45,7 +53,9 @@
         </div>
     </footer>
 
-    <script type="text/javascript" async src="{% static 'js/jquery.js' %}"></script>
+    <script type="text/javascript" src="{% static 'admin/js/jquery.js' %}"></script>
+    <script type="text/javascript" src="{% static 'admin/js/jquery.init.js' %}"></script>
+    {% block js %}{% endblock js %}
     <script type="text/javascript" async src="{% static 'js/scripts.js' %}"></script>
 </body>
 </html>

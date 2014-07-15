@@ -42,6 +42,13 @@ class Person(models.Model):
     def __unicode__(self):
         return self.name
 
+    def verify(self):
+        try:
+            self = Person.objects.get(cpf=self.cpf, email=self.email)
+            return self
+        except:
+            return None
+
     @property
     def courses(self):
         return self.person_set.all().order_by('course').distinct('course')

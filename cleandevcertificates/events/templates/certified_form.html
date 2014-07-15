@@ -1,8 +1,17 @@
 {% extends 'base.html' %}
 
+{% load staticfiles %}
+
+
+{% block js %}
+    <script type="text/javascript" async src="{% static 'js/certifieds.js' %}"></script>
+{% endblock js %}
+
 {% block content %}
 <div class="clearfix">
     <form id="id_form_certified" action="{% url 'event:certified' %}" method="POST">
+        {% csrf_token %}
+
         <div class="form-group col-sm-12">
             <label for="id_token" class="label-control">Digite o código do certificado</label>
             <div class="input-group">

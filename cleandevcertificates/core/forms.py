@@ -9,8 +9,15 @@ class PersonForm(forms.ModelForm):
     class Meta:
         model = Person
 
+        fields = (
+            'name', 'cpf', 'email', 'university', 'course',
+            'semester', 'city', 'facebook', 'twitter'
+        )
+
     def __init__(self, *args, **kwargs):
         super(PersonForm, self).__init__(*args, **kwargs)
+
+        #self.fields['kind'].widget = forms.HiddenInput()
         self.fields['cpf'].validators.append(self.cpf_validator)
 
     def cpf_validator(value):
@@ -19,3 +26,8 @@ class PersonForm(forms.ModelForm):
 
         if not len(value) is 11:
             raise ValidationError(_(u'CPF deve conter 11 dígitos.'))
+
+
+class FormLogin(forms.Form):
+    cpf = forms.CharField(label=_('CPF'))
+    email = forms.EmailField(label=_('E-mail'))

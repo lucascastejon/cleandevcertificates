@@ -1,8 +1,7 @@
 # coding: utf-8
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from django.conf import settings
-from datetime import datetime
+from datetime import date, datetime
 
 
 class Event(models.Model):
@@ -18,11 +17,11 @@ class Event(models.Model):
                                 limit_choices_to={'kind': 'S'})
     post = models.URLField(_(u'Post'), blank=True)
     token = models.CharField(_(u'token'), max_length=50, blank=True)
-    token_expirate = models.DateField(
-        _(u'data de experação'), blank=True, null=True)
+    token_expirate = models.DateTimeField(
+        _(u'data de expiração'), blank=True, null=True)
     is_active = models.BooleanField(_(u'ativo?'), default=True)
     created_at = models.DateTimeField(_(u'criado em'), auto_now_add=True)
-    updated_at = models.DateTimeField(_(u'alterador em'), auto_now=True)
+    updated_at = models.DateTimeField(_(u'alterado em'), auto_now=True)
 
     class Meta:
         verbose_name = _(u'Evento')
@@ -33,14 +32,15 @@ class Event(models.Model):
         return self.name
 
     def _generate_token(self):
-        return False
-        now = datetime.now()
-        ordinal = u'{0}'.format(now.toordinal())
+        token = u'{pk}{date}{now}'.format(pk=self.pk,
+                                          date=self.date.toordinal(),
+                                          now=datetime.now().toordinal())[:8]
+        return ''.join(sorted(token))
 
-        token = u'{pk}{ordinal}{key}'.format(
-            pk=self.pk, ordinal=ordinal, key=settings.SECRET_KEY)
+    def _generate_token_expirate(self):
+        dat = datetime.fromordinal(self.date.toordinal() + 2)
 
-        return token
+        return dat
 
     @property
     def persons(self):
@@ -63,7 +63,7 @@ class Certified(models.Model):
     observation = models.TextField(_(u'observação'), blank=True)
     is_active = models.BooleanField(_(u'ativo?'), default=True)
     created_at = models.DateTimeField(_(u'criado em'), auto_now_add=True)
-    updated_at = models.DateTimeField(_(u'alterador em'), auto_now=True)
+    updated_at = models.DateTimeField(_(u'alterado em'), auto_now=True)
 
     class Meta:
         verbose_name = _(u'Certificado')
@@ -74,6 +74,14 @@ class Certified(models.Model):
         return self.person.name
 
 
-def event_post_save(instance, **kwargs):
-    instance.token = instance._generate_token()
-models.signals.post_save.connect(event_post_save, sender=Event)
+def event_pre_save(signal, sender, instance, **kwargs):
+    # generate token
+    if not instance.token:
+        token = instance._generate_token()
+        new_token = token
+        while Event.objects.filter(token=new_token).exclude(pk=instance.pk).count() > 0:
+            new_token = instance._generate_token()
+
+        instance.token = new_token
+        instance.token_expirate = instance._generate_token_expirate()
+models.signals.pre_save.connect(event_pre_save, sender=Event)

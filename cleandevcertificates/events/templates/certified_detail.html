@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+
+{% block js %}
+<script type="text/javascript" async src="{% static 'js/certifieds.js' %}"></script>
+{% endblock js %}
+
+{% block content %}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th colspan="2"><h2>Dados do evento</h2></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th class="text-right" width="20">Evento:</th>
+            <td>{{ certified.event }}</td>
+        </tr>
+        <tr>
+            <th class="text-right">Data:</th>
+            <td>{{ certified.event.date|date:"d/m/Y" }}</td>
+        </tr>
+        <tr>
+            <th class="text-right">Duração:</th>
+            <td>{{ certified.event.workload }}h</td>
+        </tr>
+        <tr>
+            <th class="text-right" width="20">Participante:</th>
+            <td>{{ certified.person }}</td>
+        </tr>
+        <tr>
+            <th class="text-right" width="20">Classifique este evento:</th>
+            <td>
+                <form id="id_rating" method="POST" action="{% url 'event:certified_detail' certified.pk %}" class="btn-group">
+                    {% csrf_token %}
+                    <input id="id_action" name="_action" type="hidden" value="rating">
+                    <input id="id__rating" name="_rating" type="hidden" value="{{ certified.rating|default_if_none:0 }}">
+
+                    {% for i in '12345'|make_list %}
+                    {% if certified.rating >= forloop.counter %}
+                    <label class="btn btn-lg glyphicon glyphicon-star"><input name="rating" type="checkbox" value="{{ i }}" class="hide" {% if certified.rating == forloop.counter %}checked="checked"{% endif %}></label>
+                    {% else %}
+                    <label class="btn btn-lg glyphicon glyphicon-star-empty"><input name="rating" type="checkbox" value="{{ i }}" class="hide"></label>
+                    {% endif %}
+                    {% endfor %}
+
+                    <textarea name="observation" class="form-control">{{ certified.observation }}</textarea>
+                    <p id="result" class="form-group alert alert-info hide"></p>
+                </form>
+            </td>
+        </tr>
+    </tbody>
+
+    <tfoot>
+        <tr>
+            <th></th>
+            <td>
+                <form id="id_send_certified" method="POST" action="{% url 'event:certified_detail' certified.pk %}">
+                    {% csrf_token %}
+
+                    <button name="send-certified" class="btn btn-success"><i class="glyphicon glyphicon-send"></i> Emitir Certificado</button>
+                </form>
+            </td>
+        </tr>
+    </tfoot>
+</table>
+
+{% endblock content %}
