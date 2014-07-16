@@ -37,12 +37,14 @@
 
     <main>
         <div class="container">
+            {% if request.session.person %}
             <ul class="nav nav-tabs" role="tablist">
                 <li><a href="{% url 'core:home' %}"><i class="glyphicon glyphicon-home"></i></a></li>
                 <li><a href="{% url 'event:certified' %}">Gerar certificado</a></li>
                 <li><a href="{% url 'event:certified_list' %}">Meus certificados</a></li>
             </ul>
             <br>
+            {% endif %}
 
             <div id="nav-back">
                 <a href="{% block url_back_button %}{% url 'core:home' %}{% endblock url_back_button %}" class="btn btn-default"><i class="glyphicon glyphicon-chevron-left"></i> Voltar</a>
