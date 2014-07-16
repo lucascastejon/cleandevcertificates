@@ -1,11 +1,14 @@
 {% extends 'base.html' %}
-
 {% load staticfiles %}
 
 
 {% block js %}
 <script type="text/javascript" async src="{% static 'js/certifieds.js' %}"></script>
 {% endblock js %}
+
+
+{% block url_back_button %}{% url 'event:certified_list' %}{% endblock url_back_button %}
+
 
 {% block content %}
 
@@ -49,24 +52,31 @@
                     {% endfor %}
 
                     <textarea name="observation" class="form-control">{{ certified.observation }}</textarea>
-                    <p id="result" class="form-group alert alert-info hide"></p>
-                </form>
-            </td>
-        </tr>
-    </tbody>
 
-    <tfoot>
-        <tr>
-            <th></th>
-            <td>
-                <form id="id_send_certified" method="POST" action="{% url 'event:certified_detail' certified.pk %}">
-                    {% csrf_token %}
+                    <div id="result" class="alert alert-warning clearfix hide" role="alert">
+                      <button type="button" class="close" data-dismiss="alert">
+                          <span aria-hidden="true">×</span><span class="sr-only">Close</span>
+                      </button>
+                      <p></p>
+                  </div>
+              </form>
+          </td>
+      </tr>
+  </tbody>
 
-                    <button name="send-certified" class="btn btn-success"><i class="glyphicon glyphicon-send"></i> Emitir Certificado</button>
-                </form>
-            </td>
-        </tr>
-    </tfoot>
+  <tfoot>
+    <tr>
+        <th></th>
+        <td>
+            <form id="id_send_certified" method="POST" action="{% url 'event:certified_detail' certified.pk %}">
+                {% csrf_token %}
+                <input id="id__action" name="_action" type="hidden" value="send">
+
+                <button name="send-certified" class="btn btn-default"><i class="glyphicon glyphicon-send"></i> Emitir Certificado</button>
+            </form>
+        </td>
+    </tr>
+</tfoot>
 </table>
 
 {% endblock content %}

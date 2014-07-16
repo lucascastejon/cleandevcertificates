@@ -4,8 +4,6 @@
 
 
 {% block content %}
-<div class="clearfix">
-    <a href="{% url 'event:certified' %}" class="btn btn-primary btn-block">Emitir certificado</a>
-    <a href="{% url 'event:certificates' %}" class="btn btn-primary btn-block">Meus certirficados</a>
-</div>
+<h4>Seja bem vindo, {{ request.session.person.name }}.</h4>
+<p>Utilize o menu de abas para navegar no nosso sistema.</p>
 {% endblock content %}

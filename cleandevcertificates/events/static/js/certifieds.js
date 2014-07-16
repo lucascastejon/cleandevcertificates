@@ -11,11 +11,11 @@
         $("form#id_form_certified").submit(function() {
             var $this = $(this);
             var token = $("input#id_token");
-            var error_message = '<br><p class="alert alert-danger">Informe um token válido.</p>';
+            var error_message = '<br><p class="alert alert-danger"><strong>Opss..</strong><br> Este token pode estar expirado ou inválido.</p>';
             var success_message = '<p class="alert alert-success">Seu certificado foi emitido com sucesso e enviado para o seu e-mail cadastrado. Obrigado.</p>';
 
             if(token.val() == "") {
-                $("div#errors").html(error_message);
+                $("div#errors").html(error_message).show();
                 return false;
             }
 
@@ -27,6 +27,9 @@
                 statusCode: {
                     300: function(data) {
                         window.location = data.responseText;
+                    },
+                    404: function(data) {
+                        $("div#errors").html(error_message).show();
                     }
                 }
             });
@@ -84,15 +87,13 @@
                         }
 
                         if (rating.val() == i) {
-                            console.log(rating.val(), i);
-
                             $(this).find("input").attr("checked", "checked");
                         }
                     });
 
                     formRating.find("#result")
                     .addClass("show")
-                    .html("Obrigado por avaliar este evento.");
+                    formRating.find("#result > p").html("Obrigado por avaliar este evento.");
                 }
             }
         });

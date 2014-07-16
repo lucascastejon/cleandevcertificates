@@ -18,13 +18,13 @@
             <div class="navbar-header">
                 <a href="{% url 'core:home' %}" class="navbar-brand">CleanDev.org</a>
             </div>
-            <ul class="nav navbar-nav navbar-right">
+            <ul class="list-inline navbar-nav navbar-right">
                 {% if request.session.person %}
                 <li>
-                    <a href="{% url 'core:person_edit' request.session.person.pk %}">Olá, {{ request.session.person.name }}</a>
+                <a href="{% url 'core:person_edit' request.session.person.pk %}" class="btn btn-link"><i class="glyphicon glyphicon-cog"></i> Perfil</a>
                 </li>
                 <li>
-                    <a href="{% url 'core:logout' %}"><i class="glyphicon glyphicon-off"></i></a>
+                    <a href="{% url 'core:logout' %}" class="btn btn-link"><i class="glyphicon glyphicon-off"></i></a>
                 </li>
                 {% else %}
                 <li>
@@ -37,8 +37,15 @@
 
     <main>
         <div class="container">
+            <ul class="nav nav-tabs" role="tablist">
+                <li><a href="{% url 'core:home' %}"><i class="glyphicon glyphicon-home"></i></a></li>
+                <li><a href="{% url 'event:certified' %}">Gerar certificado</a></li>
+                <li><a href="{% url 'event:certified_list' %}">Meus certificados</a></li>
+            </ul>
+            <br>
+
             <div id="nav-back">
-                <a href="{% url 'core:home' %}" class="btn btn-default"><i class="glyphicon glyphicon-chevron-left"></i> Voltar</a>
+                <a href="{% block url_back_button %}{% url 'core:home' %}{% endblock url_back_button %}" class="btn btn-default"><i class="glyphicon glyphicon-chevron-left"></i> Voltar</a>
                 <br><br>
             </div>
 
