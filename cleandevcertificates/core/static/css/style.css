@@ -1,3 +1,27 @@
 body.home #nav-back {
     display: none;
 }
+
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    #pritable, #printable * {
+        visibility: visible;
+        border: none;
+    }
+    #printable {
+        size: landscape;
+        position: absolute;
+        top: 40px;
+        left: 40px;
+    }
+    #printable .col-sm-3 {
+        float: left;
+        width: 300px;
+    }
+    #printable .col-sm-9 {
+        float: left;
+        width: 900px;
+    }
+}

@@ -65,14 +65,11 @@ class Person(models.Model):
         except:
             return None
 
-    @property
     def courses(self):
         return self.person_set.all().order_by('course').distinct('course')
 
-    @property
     def events(self):
         return self.certfied.events_set.filter(is_active=True)
 
-    @property
     def certficates(self):
         return self.certfied_set.filter(is_active=True)

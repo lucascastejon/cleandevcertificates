@@ -17,6 +17,8 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
+SITE_URL = 'http://127.0.0.1:8000/'
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
@@ -41,7 +43,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'south',
+    #'south',
     'bootstrap3',
 
     'cleandevcertificates.core',
@@ -98,3 +100,9 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.static',
     'django.contrib.messages.context_processors.messages',
 )
+
+EMAIL_HOST = config('EMAIL_HOST', cast=str)
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True

@@ -9,7 +9,7 @@
                 <th>Palestra</th>
                 <th>Carga Horária</th>
                 <th>Data</th>
-                <th></th>
+                <th colspan="2"></th>
             </tr>
         </thead>
         <tbody>
@@ -21,7 +21,10 @@
                 <td>{{ object.event.workload }}h</td>
                 <td>{{ object.event.date|date:"d/m/Y" }}</td>
                 <td align="right">
-                <form method="POST" action="{% url 'event:certified_detail' object.pk %}">
+                    <a href="#" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-download"></i></a>
+                </td>
+                <td align="right">
+                    <form method="POST" action="{% url 'event:certified_detail' object.pk %}">
                         {% csrf_token %}
                         <input id="id__action" name="_action" type="hidden" value="send">
 
@@ -33,7 +36,7 @@
             </tr>
             {% empty %}
             <tr>
-                <td colspan="2">Você ainda não possui certificados. Está precisando participar mais dos eventos, não acha? =P</td>
+                <td colspan="4">Você ainda não possui certificados. Está precisando participar mais dos eventos, não acha? =P</td>
             </tr>
             {% endfor %}
         </tbody>

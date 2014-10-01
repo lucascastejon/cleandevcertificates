@@ -2,10 +2,11 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from datetime import date, datetime
+from django.conf import settings
 
 
 class Event(models.Model):
-    name = models.CharField(_(u'name'), max_length=250)
+    name = models.CharField(_(u'nome'), max_length=250)
     workload = models.IntegerField(_(u'carga horária'))
     date = models.DateTimeField(_(u'data e hora'))
     place = models.ForeignKey('core.Person', verbose_name=_(u'Local'),
@@ -35,23 +36,20 @@ class Event(models.Model):
         token = u'{pk}{date}{now}'.format(pk=self.pk,
                                           date=self.date.toordinal(),
                                           now=datetime.now().toordinal())[:8]
-        return ''.join(sorted(token))
+        return u''.join(sorted(token))
 
     def _generate_token_expirate(self):
         dat = datetime.fromordinal(self.date.toordinal() + 2)
 
         return dat
 
-    @property
     def persons(self):
         return self.certified.persons_set.filter(is_active=True)
 
-    @property
     def rating(self):
         return self.certified_set.exclude(rating__isnull=True)\
             .aggregate(models.Sum('rating'))
 
-    @property
     def comments(self):
         return self.certified_set.exclude(comment__isnull=True).all()
 
@@ -72,6 +70,10 @@ class Certified(models.Model):
 
     def __unicode__(self):
         return self.person.name
+
+    def get_download_url(self):
+        uri = '/events/certified/download/%s-%s' % (self.person.pk, self.event.pk)
+        return '%s%s' % (settings.SITE_URL, uri)
 
 
 def event_pre_save(signal, sender, instance, **kwargs):
